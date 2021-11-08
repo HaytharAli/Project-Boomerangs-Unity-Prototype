@@ -1239,7 +1239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boomerangPrefab: {fileID: 6229817134702320008, guid: 7fd45b8732407114cb817196fbc2eb24, type: 3}
-  camTransform: {fileID: 1214682632}
+  cameraTransform: {fileID: 1214682632}
   BoomerangLaunchForce: 3000
 --- !u!1 &1114040580
 GameObject:

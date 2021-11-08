@@ -34,6 +34,10 @@ public class MouseLook : MonoBehaviour
         if(Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
             mouseSensitivity = mouseSensitivity - 50;
+            if(mouseSensitivity < 1)
+            {
+                mouseSensitivity = 1;
+            }
         }
 
     }
