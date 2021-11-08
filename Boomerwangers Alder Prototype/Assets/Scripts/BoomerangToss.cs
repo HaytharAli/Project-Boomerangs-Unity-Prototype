@@ -8,19 +8,13 @@ public class BoomerangToss : MonoBehaviour
     Rigidbody boomerangRigidbody;
     BoomerangBehavior boomerangBehavior; //Reference to the Boomerang's own script
     
-
     //-----Player References-----//
     public Transform cameraTransform;
 
-
     //-----Boomerang Properties-----//
     bool thrown = false; //Keeps track of whether the wang is thrown
-    public float BoomerangLaunchForce = 1000f;
-
-
-
-
-
+    public float projectileLaunchForce = 1000f;
+    public float projectileSpacing = 1f;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -29,18 +23,16 @@ public class BoomerangToss : MonoBehaviour
         {
             if (!thrown)
             {
-                //Determine Angle and Position to start the projectile
-                Quaternion projRot = Quaternion.Euler(cameraTransform.localRotation.x, this.transform.localRotation.y, 0); //Get the Camera's Vertical Rotation, and the body's Horizontal Rotation
-                Vector3 projectileSpacing = cameraTransform.position + cameraTransform.forward * 1f;
+                Vector3 projectilePosition = cameraTransform.position + cameraTransform.forward * projectileSpacing;
 
                 //Make the boomerang and set up the refernces!
-                boomerangCurrent = Instantiate(boomerangPrefab, cameraTransform.position + projectileSpacing, cameraTransform.rotation);
+                boomerangCurrent = Instantiate(boomerangPrefab, projectilePosition, cameraTransform.rotation);
                 boomerangRigidbody = boomerangCurrent.GetComponent<Rigidbody>();
                 boomerangBehavior = boomerangCurrent.GetComponent<BoomerangBehavior>();
-                boomerangBehavior.initBoomerang(this);
-               
+                boomerangBehavior.initBoomerang(this, this.transform);
+
                 //Add forces to send it flying
-                boomerangRigidbody.AddForce(boomerangCurrent.transform.localRotation * Vector3.forward * BoomerangLaunchForce);
+                boomerangRigidbody.AddForce(boomerangCurrent.transform.localRotation * Vector3.forward * projectileLaunchForce);
                 thrown = true;
             }
             else
@@ -49,9 +41,15 @@ public class BoomerangToss : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(cameraTransform.position, cameraTransform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
                 {
-                    boomerangBehavior.updateTarget(hit.point);
+                    if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                    {
+                        boomerangBehavior.updateTarget(hit.transform);
+                    }
+                    else
+                    {
+                        boomerangBehavior.updateTarget(hit.point);
+                    }
                 }
-
             }
         }
     }
@@ -63,7 +61,6 @@ public class BoomerangToss : MonoBehaviour
         boomerangRigidbody = null;
 
         thrown = false;
-        Debug.Log("Deleted!");
     }
 }
 

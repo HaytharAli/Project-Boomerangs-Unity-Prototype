@@ -1051,6 +1051,7 @@ GameObject:
   - component: {fileID: 921992444}
   - component: {fileID: 921992443}
   - component: {fileID: 921992447}
+  - component: {fileID: 921992448}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -1151,6 +1152,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &921992448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 921992442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b46ec255571e941ba5a8005a7ca64f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &997716305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,7 +1253,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boomerangPrefab: {fileID: 6229817134702320008, guid: 7fd45b8732407114cb817196fbc2eb24, type: 3}
   cameraTransform: {fileID: 1214682632}
-  BoomerangLaunchForce: 3000
+  projectileLaunchForce: 1000
+  projectileSpacing: 1
 --- !u!1 &1114040580
 GameObject:
   m_ObjectHideFlags: 0

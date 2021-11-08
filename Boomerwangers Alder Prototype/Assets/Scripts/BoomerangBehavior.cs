@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class BoomerangBehavior : MonoBehaviour
 {
-    //References to this objects own components
+    //-----Boomerang Components-----//
     Rigidbody _rigidbody;
+    //Reference to the Boomerang Throwing Script and Transform of the asshat who threw it
+    Transform lockedTarget = null;
+    bool targetLocked = false;
     Transform playerTransform;
-    //Reference to the Boomerang Throwing Script from the asshat who threw it
     BoomerangToss toss;
 
     //Boomerang Properties
@@ -17,7 +19,6 @@ public class BoomerangBehavior : MonoBehaviour
 
     private void Start()
     {
-        playerTransform = GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -27,14 +28,15 @@ public class BoomerangBehavior : MonoBehaviour
         Seek(target);
     }
 
-    //Uses Seek Steering Behaviour to send the Boomerang flying towards the target vector. 
-    //Automatically updated the target to be the player and auto seeks if returning.
     private void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Returning Boomerwang");
             returnBoomerang();
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            returning = true;
         }
     }
 
@@ -42,6 +44,10 @@ public class BoomerangBehavior : MonoBehaviour
     {
         if (Input.GetMouseButton(0) || returning)
         {
+            if (targetLocked)
+            {
+                target = lockedTarget.position;
+            }
             if (returning)
             {
                 target = playerTransform.position;
@@ -65,20 +71,27 @@ public class BoomerangBehavior : MonoBehaviour
         {
             target = newTarget;
         }
-        else
-        {
-            target = playerTransform.position;
-        }
     }
 
-    public void initBoomerang(BoomerangToss bt)
+    public void updateTarget(Transform enemyTrans)
+    {
+        if (!returning)
+        {
+            lockedTarget = enemyTrans;
+            targetLocked = true;
+        }
+    }
+    public void initBoomerang(BoomerangToss bt, Transform pt)
     {
         toss = bt;
+        playerTransform = pt;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         returning = true;
+        targetLocked = false;
+        lockedTarget = null;
         if(collision.transform.name == "Player")
         {
             returnBoomerang();            
